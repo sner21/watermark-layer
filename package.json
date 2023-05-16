@@ -1,0 +1,21 @@
+{
+  "name": "pdf-editer",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ant-design-vue": "^3.2.20",
+    "pdfjs-dist": "^2.11.338",
+    "vite-plugin-components": "^0.13.3",
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
+    "sass": "^1.62.1",
+    "vite": "^4.0.0"
+  }
+}
