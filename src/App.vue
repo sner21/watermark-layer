@@ -1,10 +1,10 @@
 <template>
-	<div class="pdf_class" style="width: min-content;border: 1px #000 solid" ref="pdf_class">
+	<div class="pdf_class" style="width: min-content;transform: scale(2);transform-origin: left top;" ref="pdf_class">
 		<canvas ref="myCanvas" id="canvas-wrap">
 			<div id="annotation-layer"></div>
 		</canvas>
 	</div>
-	<stamp-main :size="viewport" :canvas="$refs.pdf_class">
+	<stamp-main :size="{width:viewport?.width*2,height:viewport?.height*2}" :canvas="$refs.pdf_class">
 		<!--		<div class="pdf_class" style="width: min-content;border: 1px #000 solid" ref="pdf_class">-->
 		<!--			<canvas ref="myCanvas" id="canvas-wrap" >-->
 		<!--				<div id="annotation-layer"></div>-->
@@ -39,6 +39,8 @@ const getPage = (pdf, pageNumber) => {  // 参数为 pdf 实例, 当前页码
             let canvas = toRaw(myCanvas.value);
             //设置参数
             viewport.value = page.getViewport({scale: 1});
+            viewport.value.width
+            viewport.value.height
             canvas.height = viewport.value.height;
             canvas.width = viewport.value.width;
             let ctx = canvas.getContext("2d");

@@ -1,6 +1,6 @@
 <template>
-	<a-row style="width: 1920px;height: 100vh;">
-		<a-col :span="12" style="border-right: 1px solid #000;padding: 20px;">
+	<a-row style="width: auto;height: 100vh;flex-flow: nowrap;overflow: hidden">
+		<a-col :span="12" style="border-right: 1px solid #000;padding: 20px;overflow: auto;height: 100%;">
 			<a-space direction="vertical" align="center" style="width: 100%;" :size="20">
 				<div>
 					<div style="display: flex">
@@ -48,7 +48,6 @@
 						<a-select-option value="16">16</a-select-option>
 					</a-select>
 				</div>
-
 				<editer-option v-model:value="stampOpicity[d]" :min="0" :max="1" step="0.1"
 				               @update:value="editText()"
 				               :disabled="!stamp[d]" label="透明度" :precision="1">
@@ -96,9 +95,13 @@
 				<a-button @click="test">测试</a-button>
 			</a-space>
 		</a-col>
-		<a-col :span="12" style="display:flex;justify-content: center;align-items: center;">
-			<div ref="tela" style="width: fit-content;height:fit-content;overflow: hidden;display: flex">
-			</div>
+		<a-col :span="12" style="width: auto;height: 100%;position: relative">
+      <div style="display: flex;justify-content: center;align-items: center;width: 100%;height: 100%;">
+	      <div ref="tela"
+	           style="overflow: hidden;position: absolute;border: 1px #000 solid"
+	           :style="{width:props.size?.width+'px',height:props.size?.height+'px'}">
+	      </div>
+      </div>
 		</a-col>
 		<span ref="measure" :style="textSize" style="position: absolute;visibility:hidden;">{{ content[d] }}</span>
 
@@ -128,9 +131,8 @@ const intY = ref(0)
 // const dragY=ref(0)
 
 
-const scaleX = ref(1)
-const scaleY = ref(1)
-const transform = computed(() => `scaleX(${scaleX.value}) scaleY(${scaleY.value})`)
+const scale = ref(1)
+const transform = computed(() => `scale(${scale.value})`)
 const tela = ref()
 const fileInput = ref()
 const textInput = ref()
@@ -183,35 +185,39 @@ const maxScale = ref(1)
 const pre = ref()
 watch(props, () => {
     tela.value.appendChild(props.canvas)
-    props.canvas.style.transform = transform.value
-    scaleX.value = 800 / props.size.width
-    scaleY.value = 1000 / props.size.height
-    if (scaleX.value < 1) {
-        scaleX.value = 800 / props.size.width
-    }
-    if (scaleY.value < 1) {
-        scaleY.value = 1000 / props.size.height
-    }
+    const max = Math.min(750 / props.size.width, 900 / props.size.height)
+    if (max < 1) scale.value = max
+    tela.value.style.transform = transform.value
+
 }, {deep: true})
 // onMounted(() => tela.value = (useSlots().default()[0]))
 // onMounted(() => tela.value = (useSlots().default()[0]))
-const test = () => {
+const toBase64 =  (i) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = i.width;
+    canvas.height = i.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(i, 0, 0, i.width, i.height);
+    // const ext = i.src.substring(i.src.lastIndexOf(".") + 1).toLowerCase();
+    // console.log(ext)
+    return canvas.toDataURL();
+}
+const test = async () => {
     const str = stamp.map((i, k) => {
-        const canvas = document.createElement("canvas");
-        canvas.width = i.width;
-        canvas.height = i.height;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(i, 0, 0, i.width, i.height);
-        const ext = i.src.substring(i.src.lastIndexOf(".") + 1).toLowerCase();
-        const dataURL = canvas.toDataURL("image/" + ext);
-        // const str = i.src.replaceAll('data:image/svg+xml,', '')
-        // svg.innerHTML=str
-        return (`<div  style="width:${stampWidth[k]}px; height:${stampHeight[k] +
-        'px'};left:${stampX[k]}px; top:${stampY[k]}px;position: absolute;" >` + `<img src="${dataURL}"/>` + "</div>")
+        if (i.src.includes('data:image/svg+xml,')){
+            const src= i.src.replace('data:image/svg+xml,','')
+            return (`<svg style="width:${stampWidth[k]}px; height:${stampHeight[k]}px;left:${stampX[k]}px; top:${stampY[k]}px;position: absolute;">${src}</svg>`)
+        }
+        else {
+            const dataURL = toBase64(i)
+            return (`<div style="width:${stampWidth[k]}px;height:${stampHeight[k]}px;left:${stampX[k]}px; top:${stampY[k]}px;position: absolute;" ><img src="${dataURL}"/></div>`)
+        }
     }).join('')
-    src.value = ("data:image/svg+xml," + `<svg xmlns='http://www.w3.org/2000/svg' width='${props.size.width}' height='${props.size.height}'>` +
-        "<foreignObject width='100%' height='100%'>" + "<div xmlns='http://www.w3.org/1999/xhtml'>" +
-        str + "</div>" + "</foreignObject>" + "</svg>")
+    src.value = (`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='${props.size.width}' height='${props.size.height}'><foreignObject width='100%' height='100%'><div xmlns='http://www.w3.org/1999/xhtml'>${str}</div></foreignObject></svg>`)
+    const img = new Image()
+    img.src = src.value
+    await img.onload
+    src.value =  toBase64(img)
     visible.value = true
 }
 const textSize = computed(() => {
@@ -250,7 +256,6 @@ watch(stampWidth, () => {
 watch(stampHeight, () => {
     stampHeight[d.value] >= props.size.height && (stampHeight[d.value] = props.size.height)
     stampHeightCache[d.value] = stampHeight[d.value]
-
     stamp[d.value].style.height = stampHeight[d.value] + 'px'
 
 }, {deep: true})
@@ -276,12 +281,12 @@ const editText = async (fallback = new Function()) => {
             const list = []
             for (let j = 0; j <= numX + 5; j++) {
                 for (let k = 0; k <= numY + 5; k++) {
-                    list.push(`<text transform="rotate(${stampRotate[d.value]},${rect.width * (j - 2)},${rect.height / 2 + (k - 2) * rect.height})"    x="${(rect.width + stampMarginLeft[d.value]) * (j - 2)}"    y="${rect.height / 2 + (k - 2) * (rect.height + stampMarginTop[d.value])}"  fill="black"  dominant-baseline="Central"   font-size="${fontSize[d.value]}px"  font-style="${fontStyle[d.value]}"  font-family="${fontFamily[d.value]}">${content[d.value]}</text>`)
+                    list.push(`<text transform="rotate(${stampRotate[d.value]},${((rect.width + stampMarginLeft[d.value])) * (j - 2)},${rect.height / 2 + (k - 2) * (rect.height + stampMarginTop[d.value])})"    x="${((rect.width + stampMarginLeft[d.value])) * (j - 2)}"    y="${rect.height / 2 + (k - 2) * (rect.height + stampMarginTop[d.value])}"  fill="black"  dominant-baseline="Central"   font-size="${fontSize[d.value]}px"  font-style="${fontStyle[d.value]}"  font-family="${fontFamily[d.value]}">${content[d.value]}</text>`)
                 }
             }
             const str = `<svg xmlns="http://www.w3.org/2000/svg"   version="1.1" opacity="${stampOpicity}"  width="${width}px"  height="${height + rect.height / 2}px">${list.map(i => i)}</svg>`
             stamp[d.value].src = "data:image/svg+xml," + str
-            stamp[d.value].style.transform = 'scale(1)'
+            // stamp[d.value].style.transform = transform.value
         }
             break
     }
@@ -300,14 +305,14 @@ const registerEvent = (el, pre, stamp, i) => {
         stamp[i].style.pointerEvents = 'none'
         pre.style.pointerEvents = 'all';
         (e.target === stamp[i]) && (dragSwitch.value = true)
-        intX.value = e.layerX
-        intY.value = e.layerY
+        intX.value = e.offsetX * scale.value
+        intY.value = e.offsetY * scale.value
     })
     pre.addEventListener('mousemove', (e) => {
         e.stopPropagation()
         if (dragSwitch.value && e.target === pre && d.value === i) {
-            stampX[i] = e.layerX - intX.value
-            stampY[i] = e.layerY - intY.value
+            stampX[i] = (e.offsetX - intX.value)
+            stampY[i] = (e.offsetY - intY.value)
         }
     })
     document.addEventListener('click', (e) => {
@@ -329,6 +334,8 @@ const createPre = (el) => {
     pre.value.style.width = el.clientWidth + 'px'
     pre.value.style.zIndex = 999
     pre.value.style.position = 'absolute'
+    // pre.value.style.transform = transform.value
+    pre.value.style.transformOrigin = 'left top'
     pre.value.style.top = pre.value.style.left = '0'
     pre.value.style.pointerEvents = 'none'
     el.append(pre.value)
