@@ -27,7 +27,7 @@
 						</div>
 						<img :src="stampUrl" alt="" v-show="stampUrl" style="max-height:200px;max-width: 300px ">
 					</div>
-					<a-button @click="appendStamp(stampUrl, tela, index++)">添加图片</a-button>
+					<a-button @click="appendStamp(stampUrl, tela, index++)">添加图片</a-button> 
 				</div>
 				<div>
 					<a-select :value="fontFamily[d]" @change="editText(()=>fontFamily[d] = $event)">
