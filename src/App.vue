@@ -1,10 +1,10 @@
 <template>
-	<div class="pdf_class" style="width: min-content;transform: scale(2);transform-origin: left top;" ref="pdf_class">
+	<div class="pdf_class"  ref="pdf_class">
 		<canvas ref="myCanvas" id="canvas-wrap">
 			<div id="annotation-layer"></div>
 		</canvas>
 	</div>
-	<stamp-main :size="{width:viewport?.width*2,height:viewport?.height*2}" :canvas="$refs.pdf_class">
+	<stamp-main :size="{width:viewport?.width,height:viewport?.height}" :canvas="$refs.pdf_class">
 		<!--		<div class="pdf_class" style="width: min-content;border: 1px #000 solid" ref="pdf_class">-->
 		<!--			<canvas ref="myCanvas" id="canvas-wrap" >-->
 		<!--				<div id="annotation-layer"></div>-->
