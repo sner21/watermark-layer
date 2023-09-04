@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import {computed, nextTick, onMounted, reactive, ref, toRaw, watch, useSlots,defineProps} from 'vue';
+import {defineProps} from 'vue';
 import StampCanvas from '@/components/stamp-canvas.vue'
 const props=defineProps(['canvas','size'])
 </script>

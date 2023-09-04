@@ -252,12 +252,12 @@ function stampRender(props) {
         stamp.forEach(i => i.classList.remove('active-stamp'))
         stampClass[i] !== 'repeat' && stamp[i].classList.add('active-stamp')
         stamp[i].addEventListener('mousedown', function () {
+            props.stampClick(i)
             stamp.forEach(i => i.classList.remove('active-stamp'))
             stampClass[i] !== 'repeat' && stamp[i].classList.add('active-stamp')
             d = i
         })
         el.addEventListener('mousedown', function (e) {
-            props.stampClick(i)
             // d = i
             stamp[i].style.pointerEvents = 'none'
             pre.style.pointerEvents = 'all';
@@ -329,10 +329,8 @@ function stampRender(props) {
         stamp.push(document.createElement('img'))
         stampWidth.push(200)
         stampHeight.push(200)
-        console.log(stampHeight.at(-1))
         stampScaleCache.push(1)
         stampScale.push(1)
-        console.log(stampHeight.at(-1))
         content.push(text)
         stampClass.push(kind)
         stampMarginTop.push(0)
@@ -348,6 +346,11 @@ function stampRender(props) {
 
     const appendRepeatText = async (text, i) => {
         d = i
+        if (typeof text === 'string') {
+            measure.innerText = text
+        } else {
+            measure.innerText = text.find(i => i.length === Math.max(...text.map(i => i.length)))
+        }
         changeTextSize()
         if (!text) return
         const el = props.canvas
@@ -380,7 +383,6 @@ function stampRender(props) {
     }
     const appendText = async (text, i) => {
         d = i
-        handleList(text, 'text')
         if (typeof text === 'string') {
             measure.innerText = text
         } else {
@@ -389,6 +391,7 @@ function stampRender(props) {
         if (!text) return
         const el = props.canvas
         const pre = createPre(el)
+        handleList(text, 'text')
         const rect = measure.getBoundingClientRect()
         stampWidth[i] = rect.width
         let str
