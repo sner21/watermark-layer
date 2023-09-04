@@ -36,7 +36,6 @@ function stampRender(props) {
                 if (p !== 'length') {
                     //TODO 最大值 +1
                     stampWidth[d] >= props.size.width && (stampWidth[d] = props.size.width)
-                    stampWidthCache[d] = stampWidth[d]
                     stamp[d].style.width = stampWidth[d] + 'px'
                     return true
                 }
@@ -48,7 +47,6 @@ function stampRender(props) {
                 target[p] = value
                 if (p !== 'length') {
                     stampHeight[d] >= props.size.height && (stampHeight[d] = props.size.height)
-                    stampHeightCache[d] = stampHeight[d]
                     stamp[d].style.height = stampHeight[d] + 'px'
                     return true
                 }
@@ -104,8 +102,6 @@ function stampRender(props) {
         stampMarginTop,
         stampMarginLeft
     } = stampList
-    const stampWidthCache = []
-    const stampHeightCache = []
     const stampScaleCache = []
     let d = null // 当前选中的序号
     let dragSwitch = false // 拖动锁
@@ -136,14 +132,6 @@ function stampRender(props) {
         measure.style.visibility = 'hidden'
         props.canvas.appendChild(measure)
     }
-    // const textSize = computed(() => { // 比对字体的样式
-    //     return {
-    //         fontFamily: 'Microsoft YaHei,serif',
-    //         fontSize: fontSize[d] + 'px',
-    //         fontStyle: fontStyle[d],
-    //         transform: `rotate(${stampRotate[d]}deg)`
-    //     }
-    // })
 
     refreshMeasure()
 
@@ -153,7 +141,6 @@ function stampRender(props) {
         canvas.height = i.height;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(i, 0, 0, i.width, i.height);
-        // const ext = i.src.substring(i.src.lastIndexOf(".") + 1).toLowerCase();
         return canvas.toDataURL();
     }
     const test = async () => {
@@ -175,47 +162,10 @@ function stampRender(props) {
         file.readAsDataURL(data)
         await new Promise(resolve => file.onloadend = () => resolve())
         return file.result
-        // await  fetch(src).then(function(response) {
-        //     return response.blob();
-        // }).then(function(data) {
-        //     file.readAsDataURL(data)
-        //     file.onloadend = () => {
-        //         return file.result
-        //     }
-        // }).catch(function(e) {
-        //     console.log("Oops, error");
-        // });
     }
-    // watch(stampX, (val) => {
-    //     if (stampX[d] >= props.canvas.clientWidth - stampWidth[d]) stampX[d] = props.canvas.clientWidth - stampWidth[d]
-    //     if (stampX[d] <= 0)stampX[d] = 0
-    //     stamp[d] && (stamp[d].style.left = stampX[d] + "px")
-    // }, {deep: true})
-    // watch(stampY, (val) => {
-    //     // if (stampY[d] >= props.height - stampHeight[i]) stampY[d] = props.height - stampHeight[i]
-    //     if (stampY[d] >= props.canvas.clientHeight - stampHeight[d]) stampY[d] = props.canvas.clientHeight - stampHeight[d]
-    //     if (stampY[d] <= 0)stampY[d] = 0
-    //     stamp && (stamp[d].style.top = stampY[d] + "px")
-    // }, {deep: true})
-    // watch(stampScale, (val) => {
-    //     if ((stampWidth[d] >= props.size.width || stampHeight[d] >= props.size.height)&& stampScale[d] > stampScaleCache[d]) return
-    //     stampWidth[d] *= stampScale[d] / stampScaleCache[d]
-    //     stampHeight[d] *= stampScale[d] / stampScaleCache[d]
-    //     stampScaleCache[d] = stampScale[d]
-    // }, {deep: true})
-    // watch(stampWidth, () => {
-    //     //TODO 最大值 +1
-    //     stampWidth[d] >= props.size.width && (stampWidth[d] = props.size.width)
-    //     stampWidthCache[d] = stampWidth[d]
-    //     stamp[d].style.width = stampWidth[d] + 'px'
-    //
-    // }, {deep: true})
-    // watch(stampHeight, () => {
-    //     stampHeight[d] >= props.size.height && (stampHeight[d] = props.size.height)
-    //     stampHeightCache[d] = stampHeight[d]
-    //     stamp[d].style.height = stampHeight[d] + 'px'
-    // }, {deep: true})
-
+    const deleteStamp = (index) => {
+        stampList.splice(index, 1)
+    }
     const editText = async (fallback = new Function()) => {
         fallback()
         changeTextSize()
@@ -252,12 +202,12 @@ function stampRender(props) {
         stamp.forEach(i => i.classList.remove('active-stamp'))
         stampClass[i] !== 'repeat' && stamp[i].classList.add('active-stamp')
         stamp[i].addEventListener('mousedown', function () {
+            props.stampClick(i)
             stamp.forEach(i => i.classList.remove('active-stamp'))
             stampClass[i] !== 'repeat' && stamp[i].classList.add('active-stamp')
             d = i
         })
         el.addEventListener('mousedown', function (e) {
-            props.stampClick(i)
             // d = i
             stamp[i].style.pointerEvents = 'none'
             pre.style.pointerEvents = 'all';
@@ -329,10 +279,8 @@ function stampRender(props) {
         stamp.push(document.createElement('img'))
         stampWidth.push(200)
         stampHeight.push(200)
-        console.log(stampHeight.at(-1))
         stampScaleCache.push(1)
         stampScale.push(1)
-        console.log(stampHeight.at(-1))
         content.push(text)
         stampClass.push(kind)
         stampMarginTop.push(0)
@@ -348,6 +296,11 @@ function stampRender(props) {
 
     const appendRepeatText = async (text, i) => {
         d = i
+        if (typeof text === 'string') {
+            measure.innerText = text
+        } else {
+            measure.innerText = text.find(i => i.length === Math.max(...text.map(i => i.length)))
+        }
         changeTextSize()
         if (!text) return
         const el = props.canvas
@@ -380,7 +333,6 @@ function stampRender(props) {
     }
     const appendText = async (text, i) => {
         d = i
-        handleList(text, 'text')
         if (typeof text === 'string') {
             measure.innerText = text
         } else {
@@ -389,6 +341,7 @@ function stampRender(props) {
         if (!text) return
         const el = props.canvas
         const pre = createPre(el)
+        handleList(text, 'text')
         const rect = measure.getBoundingClientRect()
         stampWidth[i] = rect.width
         let str
