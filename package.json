@@ -1,22 +1,30 @@
 {
-  "name": "pdf-editer",
-  "version": "0.0.0",
-  "private": true,
+  "name": "mark-layer",
+  "version": "0.0.1",
+  "type": "module",
+  "author": "sner21",
+  "license": "MIT",
+  "description": "原生可用，用拖动的方式在页面区域添加logo或水印，支持单独导出标识图层。",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build"
   },
-  "dependencies": {
-    "ant-design-vue": "^3.2.20",
-    "pdfjs-dist": "^2.11.338",
-    "vite-plugin-components": "^0.13.3",
-    "vue": "^3.2.45"
-  },
+  "keywords": ["mark","watermark","logo"],
+  "files": ["dist"],
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
     "sass": "^1.62.1",
+    "unplugin-vue-components": "^0.25.2",
     "vite": "^4.0.0",
-    "test": "file:test"
+    "vue": "^3.2.45",
+    "ant-design-vue": "^4.0.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sner21/mark-layer"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   }
 }
