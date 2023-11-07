@@ -1,4 +1,4 @@
-<h1>mark-layer</h1>
+<h1>watermark-layer</h1>
 
 ![GitHub license](https://img.shields.io/github/license/pure-admin/vue-pure-admin?style=flat)
 
@@ -12,9 +12,9 @@
 
 ## 安装
 ```bash
-npm install mark-layer
+npm install watermark-layer
 or
-pnpm install mark-layer
+pnpm install watermark-layer
 ```
 ## 使用
 ```html
@@ -23,7 +23,7 @@ pnpm install mark-layer
     </div>
 ```
  ```js
-import markRender from 'mark-layer'
+import markRender from 'watermark-layer'
 
 const option = {
     // 需要转换的目标容器 (必需项)

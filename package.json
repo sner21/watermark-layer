@@ -1,5 +1,5 @@
 {
-  "name": "mark-layer",
+  "name": "watermark-layer",
   "version": "0.0.1",
   "type": "module",
   "author": "sner21",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sner21/mark-layer"
+    "url": "https://github.com/sner21/watermark-layer"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
