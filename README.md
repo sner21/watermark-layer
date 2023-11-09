@@ -1,5 +1,7 @@
 <h1>watermark-layer</h1>
 
+用拖动的方式在页面区域添加logo或水印，支持图片、文字、背景文字.
+
 ![GitHub license](https://img.shields.io/github/license/pure-admin/vue-pure-admin?style=flat)
 
 
