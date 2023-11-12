@@ -1,28 +1,44 @@
-<h1>watermark-layer</h1>
+<h1>watermark-layer </h1> 
 
-![GitHub license](https://img.shields.io/github/license/pure-admin/vue-pure-admin?style=flat)
+### 用拖动的方式在页面区域添加 logo 或水印
 
+![GitHub license](./demo.png)
 
 ## 简介
 
-1. 用拖动的方式在页面区域添加logo或水印，支持图片、文字、背景文字。
-2. 支持单独导出标识图层,可用于前端预览后端处理pdf/tiff等格式的场景,减少前后端的定位偏差。
-3. 可直接导出处理后的图片,用于简单处理的场景.
-4. 图片水印可滚轮调整大小,其他类型也可通过参数调整.
+1. 用拖动的方式在页面区域添加 logo 或水印，支持图片、文字、背景文字。
+2. 支持单独导出标识图层, 可用于前端预览后端处理 pdf/tiff 等格式的场景, 减少前后端的定位偏差。
+3. 可直接导出处理后的图片, 用于简单处理的场景.
+4. 图片水印可滚轮调整大小, 其他类型也可通过参数调整.
 
 ## 安装
+
 ```bash
 npm install watermark-layer
 or
 pnpm install watermark-layer
 ```
+
 ## 使用
+
 ```html
-    <div id="canvas-con">
-      <img src="test.jpg" alt="" style="display: block;" class="test-img">
-    </div>
+
+<div id="canvas-con">
+	<img src="test.jpg" alt="" style="display: block;" class="test-img">
+</div>
 ```
- ```js
+
+```js
+import markRender from 'watermark-layer'
+
+markCon = markRender({
+    target: document.querySelector('#canvas-con')
+})
+```
+
+### 选项
+
+```js
 import markRender from 'watermark-layer'
 
 const option = {
@@ -38,7 +54,7 @@ const option = {
         console.log(index)
     }
 }
-const style = reactive({
+const style = reactive({ // 可选
     color: 'black', // 文字的字体颜色
     fontSize: 24, // 字号
     fontFamily: '微软雅黑', // 字体
@@ -65,4 +81,3 @@ document.querySelector('.test-img').addEventListener('load', async () => {
     markCon.deleteMark(index)
 })
 ```
-
