@@ -7,6 +7,7 @@
   "description": "原生可用，用拖动的方式在页面区域添加logo或水印，支持单独导出标识图层。",
   "scripts": {
     "dev": "vite",
+    "web": "set NODE_WEB=true&& vite",
     "build": "vite build",
     "pub": "npm publish",
     "patch": "npm patch"

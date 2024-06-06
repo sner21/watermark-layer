@@ -2,7 +2,7 @@
   <div id="home">
     <h1 style="color:#fff;text-align: center;"> 演示页面 </h1>
     <div id="canvas-con">
-      <img src="test.jpg" alt="" style="display: block;" class="test-img">
+      <img :src="test" alt="" style="display: block;" class="test-img">
     </div>
     <div id="config-con">
       <div>
@@ -51,7 +51,7 @@
 <script setup>
 import markRender from '../../package/markLayer.js'
 import {onMounted, reactive, ref} from "vue";
-
+import test from "../../test.jpg"
 let markCon = null
 const i = ref()
 const text = ref('')
