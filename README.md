@@ -1,6 +1,7 @@
 <h1>watermark-layer </h1> 
 
 ### 用拖动的方式在页面区域添加 logo 或水印
+预览地址 : https://watermark-layer.vercel.app/
 
 ![GitHub license](./demo.png)
 
