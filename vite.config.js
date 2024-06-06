@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import {AntDesignVueResolver} from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 const config = {}
-if (!process.env?.web) {
+if (process.env?.web) {
     config.build = {
         minify: true,
         lib: {
