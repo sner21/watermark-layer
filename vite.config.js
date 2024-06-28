@@ -5,7 +5,6 @@ import {defineConfig} from 'vite'
 const config = {}
 
 if (!process.env?.NODE_WEB) {
-    console.log(1111)
     config.build = {
         copyPublicDir:false,
         minify: true,
