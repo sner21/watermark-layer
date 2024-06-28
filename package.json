@@ -10,17 +10,24 @@
     "web": "set NODE_WEB=true&& vite build",
     "build": "vite build",
     "pub": "npm publish",
-    "patch": "npm patch"
+    "patch": "set NODE_WEB=false&& vite build"
   },
-  "keywords": ["mark","watermark","logo"],
-  "files": ["dist"],
+  "keywords": [
+    "mark",
+    "watermark",
+    "logo"
+  ],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "sass": "^1.62.1",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.0.0",
-    "vue": "^3.2.45",
-    "ant-design-vue": "^4.0.6"
+    "vue": "^3.2.45"
   },
   "repository": {
     "type": "git",
@@ -29,5 +36,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
+  },
+  "dependencies": {
+    "antd": "^5.18.3"
   }
 }

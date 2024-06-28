@@ -26,3 +26,7 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+/*.vue
+/src/views/MarkMain.vue
+/src/views
+/main.js

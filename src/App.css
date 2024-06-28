@@ -1,0 +1,57 @@
+.logo.vite:hover {
+  filter: drop-shadow(0 0 2em #747bff);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafb);
+}
+
+#home {
+    display: flex;
+    flex-direction: column;
+
+    h1 {
+        margin: 20px 0;
+    }
+
+    #canvas-con {
+        width: max-content;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 510px;
+
+        > img {
+            height: 100%;
+        }
+    }
+
+    #config-con {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 350px;
+
+        .title {
+            min-width: 45px;
+            color: white;
+            line-height: 30px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        > div {
+            display: flex;
+            width: 40%;
+
+            > * {
+                margin: 10px;
+            }
+        }
+    }
+}
+
+.active-class {
+    outline: 2px rgba(0, 0, 0, 0.64) dashed !important;
+}
