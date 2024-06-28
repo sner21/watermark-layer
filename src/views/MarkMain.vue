@@ -52,6 +52,7 @@
 import markRender from '../../package/markLayer.js'
 import {onMounted, reactive, ref} from "vue";
 import test from "../../test.jpg"
+
 let markCon = null
 const i = ref()
 const text = ref('')
@@ -80,8 +81,16 @@ const exportImage = async () => {
   a.download = "mark.png";
   a.click()
 }
-const appendMark = () => {
-  markCon.appendMark('logo.png')
+const appendMark = async () => {
+  const transfer = await window.showOpenFilePicker()
+  const file = await transfer[0].getFile()
+  const fd = new FileReader()
+  fd.readAsDataURL(file)
+  fd.onload = (e) => {
+    console.log(e)
+    markCon.appendMark(e.target.result)
+
+  }
 }
 const deleteMark = () => {
   markCon.deleteMark(i.value,)
@@ -105,7 +114,7 @@ onMounted(() => {
         i.value = index
       },
       markDrag(index) {
-       console.log(index)
+        console.log(index)
       }
     })
   })
