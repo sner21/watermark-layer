@@ -69,9 +69,6 @@ function App() {
             })
         })
     }, [])
-    // async function greet() {
-    //   setGreetMsg(await invoke("greet", { name }));
-    // }
     return (
         <div className={'main-con'}>
             <div id="home">
@@ -95,11 +92,14 @@ function App() {
                         <Button onClick={appendRepeatText}> 添加背景文本</Button>
                         <Input onChange={e => setRepeatText(e.target.value)} style={{width: "200px"}}/>
                         <div className="title"> 角度</div>
-                        <InputNumber onChange={e => setStyle({...style, rotate: e})} min={0} max={360}/>
+                        <InputNumber defaultValue={style.rotate} onChange={e => setStyle({...style, rotate: e})} min={0}
+                                     max={360}/>
                         <div className="title">X 间距</div>
-                        <InputNumber onChange={e => setStyle({...style, marginTop: e})} min={0} max={360}/>
+                        <InputNumber defaultValue={style.marginTop} onChange={e => setStyle({...style, marginTop: e})}
+                                     min={0} max={360}/>
                         <div className="title">Y 间距</div>
-                        <InputNumber onChange={e => setStyle({...style, marginLeft: e})} min={0} max={360}/>
+                        <InputNumber defaultValue={style.marginLeft} onChange={e => setStyle({...style, marginLeft: e})}
+                                     min={0} max={360}/>
                     </div>
                     <div>
                         <div className="title"> 颜色</div>
@@ -123,9 +123,9 @@ function App() {
                         }>
                         </Select>
                         <div className="title"> 字号</div>
-                        <InputNumber v-model:value="style.fontSize"/>
+                        <InputNumber defaultValue={style.fontSize} onChange={e => setStyle({...style, fontSize: e})}/>
                         <div className="title"> 透明度</div>
-                        <InputNumber v-model:value="style.opicity"/>
+                        <InputNumber defaultValue={style.opicity} onChange={e => setStyle({...style, opicity: e})}/>
                     </div>
                 </div>
             </div>
