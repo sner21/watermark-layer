@@ -25,9 +25,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sass": "^1.62.1",
-    "unplugin-vue-components": "^0.25.2",
     "vite": "^4.0.0",
-    "vue": "^3.2.45"
+    "antd": "^5.18.3"
   },
   "repository": {
     "type": "git",
@@ -36,8 +35,5 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
-  },
-  "dependencies": {
-    "antd": "^5.18.3"
   }
 }
