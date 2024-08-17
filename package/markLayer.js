@@ -8,6 +8,9 @@ export default function markRender(props) {
     if (!props.target.style.position) {
         props.target.style.position = 'relative'
     }
+    if (props.markClass) {
+        props.activeClass =props.markClass + '-' + i
+    }
     let intX = 0
     let intY = 0
     const markScaleCache = []
@@ -123,10 +126,12 @@ export default function markRender(props) {
     }
 
     const addClass = (i) => {
-        // mark.forEach(i => i.classList.remove(props.activeClass))
+        //
+        mark[i].classList.add(props.markClass)
         if (markClass[i] !== 'repeat') {
+            mark.forEach(i => i.classList.remove(props.activeClass))
             mark[i].classList.add(props.activeClass)
-            mark[i].classList.add(props.activeClass + '-' + i)
+
         }
 
     }

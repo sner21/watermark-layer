@@ -46,7 +46,7 @@ const option = {
     // 需要转换的目标容器 (必需项)
     // 如目标为 img 或其它单标签元素，target 需要选定等宽高的容器元素，类似 cropperjs。
     target: document.querySelector('#canvas-con'),
-    activeClass: 'active-class', // 自定义被选中印记的类名 (可选)
+    markClass: 'layer-mark', // 自定义印记的类名 选中的印记为markClass + -active (可选)
     zIndex: 1000, // 容器图层的层级 (可选)
     cancelEvent: false, //是否注销默认默认拖动缩放等事件(可选)
     markClick(index) {// 标识的点击事件 ( 可选)
