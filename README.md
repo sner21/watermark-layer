@@ -48,6 +48,7 @@ const option = {
     target: document.querySelector('#canvas-con'),
     activeClass: 'active-class', // 自定义被选中印记的类名 (可选)
     zIndex: 1000, // 容器图层的层级 (可选)
+    cancelEvent: false, //是否注销默认默认拖动缩放等事件(可选)
     markClick(index) {// 标识的点击事件 ( 可选)
         i.value = index
     },

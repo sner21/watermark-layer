@@ -39,7 +39,7 @@ export default function markRender(props) {
             set(target, p, value) {
                 target[p] = value
                 if (p !== 'length') {
-                    markWidth[d] > props.size.width && (markWidth[d] = props.size.width)
+                    // markWidth[d] * markScale[d]> props.size.width && (markWidth[d] = props.size.width/ markScale[d])
                     mark[d].style.width = markWidth[d] + 'px'
                     return true
                 }
@@ -50,7 +50,7 @@ export default function markRender(props) {
             set(target, p, value) {
                 target[p] = value
                 if (p !== 'length') {
-                    markHeight[d] > props.size.height && (markHeight[d] = props.size.height)
+                    // markHeight[d]* markScale[d] > props.size.height && (markHeight[d] = props.size.height/ markScale[d])
                     mark[d].style.height = markHeight[d] + 'px'
                     return true
                 }
@@ -127,6 +127,7 @@ export default function markRender(props) {
         markClass[i] !== 'repeat' && mark[i].classList.add(props.activeClass)
     }
     const registerEvent = (el, pre, mark, i) => {
+        if (props.cancelEvent) return
         props.markClick && props.markClick(i)
         props.activeClass && addClass(i)
         mark[i].addEventListener('mousedown', function () {
@@ -263,15 +264,13 @@ export default function markRender(props) {
         nMark.draggable = false
         nMark.tabIndex = -1
         registerEvent(el, pre, mark, d)
+
         maxScale = +Math.min(props.size.width / markWidth[d], props.size.height / markHeight[d]).toFixed(1)
         getImageSize(url).then(({width, height}) => {
             markWidth[d] = width
             markHeight[d] = height
-            if (width > props.size.width) {
-                markWidth[d] *= props.size.width / width
-            }
-            if (height > props.size.height) {
-                markHeight[d] *= props.size.height / height
+            if (width > props.size.width || height > props.size.height) {
+                markScale[d] = Math.min(props.size.width / width, props.size.height / height).toFixed(2)
             }
             pre.append(nMark)
         })
