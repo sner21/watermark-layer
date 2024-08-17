@@ -123,8 +123,12 @@ export default function markRender(props) {
     }
 
     const addClass = (i) => {
-        mark.forEach(i => i.classList.remove(props.activeClass))
-        markClass[i] !== 'repeat' && mark[i].classList.add(props.activeClass)
+        // mark.forEach(i => i.classList.remove(props.activeClass))
+        if (markClass[i] !== 'repeat') {
+            mark[i].classList.add(props.activeClass)
+            mark[i].classList.add(props.activeClass + '-' + i)
+        }
+
     }
     const registerEvent = (el, pre, mark, i) => {
         if (props.cancelEvent) return
